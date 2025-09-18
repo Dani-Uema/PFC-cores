@@ -22,8 +22,8 @@ public class Pigment {
     @Id
     @GeneratedValue
     private UUID id;
-
     private String name;
+    @Column(name = "hex_code")
     private String hexCode;
 
     @ManyToMany(mappedBy = "pigments")

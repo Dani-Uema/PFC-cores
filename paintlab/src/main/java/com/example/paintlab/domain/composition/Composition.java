@@ -3,15 +3,9 @@ package com.example.paintlab.domain.composition;
 import com.example.paintlab.domain.color.Color;
 import com.example.paintlab.domain.pigments.Pigment;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.*;
 
 @Table(name = "composition")
 @Entity
@@ -19,17 +13,16 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Composition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private Double porcentagem;
+    private Double percentage;
 
     @ManyToOne
-    @JoinColumn(name = "id_cor", nullable = false)
+    @JoinColumn(name = "id_color", nullable = false)
     private Color color;
 
     @ManyToMany
@@ -39,4 +32,11 @@ public class Composition {
             inverseJoinColumns = @JoinColumn(name = "pigment_id")
     )
     private List<Pigment> pigments = new ArrayList<>();
+
+    // Serve p guardar a proporcao de cada pigmento
+    @ElementCollection
+    @CollectionTable(name = "composition_pigment_proportions", joinColumns = @JoinColumn(name = "composition_id"))
+    @MapKeyJoinColumn(name = "pigment_id")
+    @Column(name = "proportion")
+    private Map<Pigment, Double> pigmentProportions = new HashMap<>();
 }
