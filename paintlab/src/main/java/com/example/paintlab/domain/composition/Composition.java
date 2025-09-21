@@ -2,6 +2,7 @@ package com.example.paintlab.domain.composition;
 
 import com.example.paintlab.domain.color.Color;
 import com.example.paintlab.domain.pigments.Pigment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Composition {
 
     @ManyToOne
     @JoinColumn(name = "id_color", nullable = false)
+    @JsonIgnore
     private Color color;
 
     @ManyToMany
@@ -33,10 +35,10 @@ public class Composition {
     )
     private List<Pigment> pigments = new ArrayList<>();
 
-    // Serve p guardar a proporcao de cada pigmento
     @ElementCollection
     @CollectionTable(name = "composition_pigment_proportions", joinColumns = @JoinColumn(name = "composition_id"))
     @MapKeyJoinColumn(name = "pigment_id")
     @Column(name = "proportion")
+    @JsonIgnore
     private Map<Pigment, Double> pigmentProportions = new HashMap<>();
 }

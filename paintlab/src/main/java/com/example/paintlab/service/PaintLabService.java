@@ -38,15 +38,11 @@ public class PaintLabService {
                 ));
             });
         }
-
+        System.out.println("Pigments encontrados: " + result);
         return result;
     }
 
-    /**
-     * Retorna todas as cores cadastradas.
-     */
     public List<Color> getAllColors() {
         return colorRepository.findAll();
     }
-
 }

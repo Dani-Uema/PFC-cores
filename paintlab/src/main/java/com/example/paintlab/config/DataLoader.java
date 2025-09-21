@@ -30,51 +30,53 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        // 1️⃣ Criar pigmentos básicos
+        if (pigmentRepository.count() == 0) {
+            pigmentRepository.saveAll(List.of(
+                    new Pigment("Azul", "#0000FF"),
+                    new Pigment("Preto", "#000000"),
+                    new Pigment("Vermelho", "#FF0000"),
+                    new Pigment("Branco", "#FFFFFF"),
+                    new Pigment("Ocre", "#CC7722"),
+                    new Pigment("Violeta", "#8F00FF"),
+                    new Pigment("Laranja", "#FFA500"),
+                    new Pigment("Verde", "#008000"),
+                    new Pigment("Amarelo", "#FFFF00"),
+                    new Pigment("Marrom", "#A52A2A")
+            ));
+        }
 
-        // Criar pigmentos básicos
-        Pigment azul = new Pigment(); azul.setName("Azul"); azul.setHexCode("#0000FF");
-        Pigment preto = new Pigment(); preto.setName("Preto"); preto.setHexCode("#000000");
-        Pigment vermelho = new Pigment(); vermelho.setName("Vermelho"); vermelho.setHexCode("#FF0000");
-        Pigment branco = new Pigment(); branco.setName("Branco"); branco.setHexCode("#FFFFFF");
-        Pigment ocre = new Pigment(); ocre.setName("Ocre"); ocre.setHexCode("#CC7722");
-        Pigment violeta = new Pigment(); violeta.setName("Violeta"); violeta.setHexCode("#8F00FF");
-        Pigment laranja = new Pigment(); laranja.setName("Laranja"); laranja.setHexCode("#FFA500");
-        Pigment verde = new Pigment(); verde.setName("Verde"); verde.setHexCode("#008000");
-        Pigment amarelo = new Pigment(); amarelo.setName("Amarelo"); amarelo.setHexCode("#FFFF00");
-        Pigment marrom = new Pigment(); marrom.setName("Marrom"); marrom.setHexCode("#A52A2A");
+        // 2️⃣ Criar cor + composição
+        if (!colorRepository.existsByName("Papel Picado")) {
+            Color papelPicado = new Color();
+            papelPicado.setName("Papel Picado");
+            papelPicado.setBrand("Suvinil");
+            papelPicado.setColorCode("PP123");
+            papelPicado.setHexCode("#F5E6D3");
 
-        pigmentRepository.saveAll(List.of(
-                azul, preto, vermelho, branco, ocre, violeta, laranja, verde, amarelo, marrom
-        ));
+            colorRepository.save(papelPicado);
 
-        // Criar cor de exemplo e salvar primeiro
-        Color papelPicado = new Color();
-        papelPicado.setName("Papel Picado");
-        papelPicado.setBrand("Suvinil");
-        papelPicado.setColorCode("PP123");
-        papelPicado.setHexCode("#F5E6D3");
+            Pigment vermelho = pigmentRepository.findByName("Vermelho").orElseThrow();
+            Pigment branco = pigmentRepository.findByName("Branco").orElseThrow();
+            Pigment amarelo = pigmentRepository.findByName("Amarelo").orElseThrow();
 
-        colorRepository.save(papelPicado); // ✅ salvar antes da Composition
+            Composition composition = new Composition();
+            composition.setColor(papelPicado);
+            composition.setPercentage(100.0);
+            composition.setPigments(List.of(vermelho, branco, amarelo));
 
-        //Criar composição da cor
-        Composition composition = new Composition();
-        composition.setColor(papelPicado); // Color já existe no banco
-        composition.setPercentage(100.0);
-        composition.setPigments(List.of(vermelho, branco, amarelo));
+            Map<Pigment, Double> proportions = new HashMap<>();
+            proportions.put(vermelho, 0.3);
+            proportions.put(branco, 0.5);
+            proportions.put(amarelo, 0.2);
+            composition.setPigmentProportions(proportions);
 
-        // proporção de cada pigmento
-        Map<Pigment, Double> proportions = new HashMap<>();
-        proportions.put(vermelho, 0.3);
-        proportions.put(branco, 0.5);
-        proportions.put(amarelo, 0.2);
-        composition.setPigmentProportions(proportions);
+            compositionRepository.save(composition);
 
-        compositionRepository.save(composition);
+            papelPicado.setCompositions(List.of(composition));
+            colorRepository.save(papelPicado);
+        }
 
-        // atualizar lista de compositions no Color (opcional)
-        papelPicado.setCompositions(List.of(composition));
-        colorRepository.save(papelPicado);
-
-        System.out.println("Dados de pigmentos e cor de exemplo carregados com sucesso!");
+        System.out.println("✅ Dados carregados com sucesso!");
     }
 }

@@ -1,6 +1,7 @@
 package com.example.paintlab.domain.color;
 
 import com.example.paintlab.domain.composition.Composition;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,6 @@ public class Color {
     @Column(name = "hex_code")
     private  String hexCode;
 
-    @OneToMany(mappedBy = "color", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "color", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Composition> compositions;
 }

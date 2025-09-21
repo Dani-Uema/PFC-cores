@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/colors")
+@RequestMapping("/colors")
 public class PaintLabController {
 
     private final PaintLabService paintLabService;
@@ -18,7 +18,6 @@ public class PaintLabController {
         this.paintLabService = paintLabService;
     }
 
-    //endpoint que retorna todos os pigmentos de uma cor
     @GetMapping("/{name}/pigments")
     public ResponseEntity<List<PigmentCompositionDTO>> getPigments(@PathVariable String name) {
         List<PigmentCompositionDTO> pigments = paintLabService.getPigmentsByColorName(name);
@@ -28,11 +27,12 @@ public class PaintLabController {
         return ResponseEntity.ok(pigments);
     }
 
-    //endpoint para listar todas as cores
     @GetMapping
     public ResponseEntity<List<Color>> getAllColors() {
         List<Color> colors = paintLabService.getAllColors();
         return ResponseEntity.ok(colors);
     }
 }
+
+
 

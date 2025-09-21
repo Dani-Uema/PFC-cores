@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface ColorRepository extends JpaRepository<Color, UUID> {
     Optional<Color> findByNameIgnoreCase(String name);
+    boolean existsByName(String name);
 }

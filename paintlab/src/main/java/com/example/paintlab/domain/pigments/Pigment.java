@@ -1,6 +1,7 @@
 package com.example.paintlab.domain.pigments;
 
 import com.example.paintlab.domain.composition.Composition;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,5 +28,28 @@ public class Pigment {
     private String hexCode;
 
     @ManyToMany(mappedBy = "pigments")
+    @JsonIgnore
     private List<Composition> compositions = new ArrayList<>();
+
+    public Pigment(String name, String hexCode) {
+        this.name = name;
+        this.hexCode = hexCode;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pigment)) return false;
+        Pigment pigment = (Pigment) o;
+        return id != null && id.equals(pigment.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
 }
+
+
