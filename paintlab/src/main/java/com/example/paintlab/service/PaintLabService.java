@@ -38,7 +38,7 @@ public class PaintLabService {
                 ));
             });
         }
-        System.out.println("Pigments encontrados: " + result);
+        System.out.println("Pigmentoss encontrados: " + result);
         return result;
     }
 
