@@ -9,11 +9,21 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
     const email = localStorage.getItem('email');
     const role = localStorage.getItem('role');
 
-    if (token && email && role) {
-      setUser({ email, role });
+    console.log('🔍 AuthContext - Carregando do localStorage:', { userId, email, role });
+
+    if (token && userId && email && role) {
+      setUser({ 
+        id: userId,       
+        email, 
+        role 
+      });
+      console.log('✅ AuthContext - User carregado:', { id: userId, email, role });
+    } else {
+      console.log('❌ AuthContext - Dados incompletos no localStorage');
     }
 
     setLoading(false);
@@ -35,29 +45,47 @@ export function AuthProvider({ children }) {
 
   const signIn = async (email, password) => {
     try {
+      console.log('🔍 AuthContext - Fazendo login para:', email);
+      
       const response = await axios.post('http://localhost:8080/user/login', {
         email,
         password
       });
 
-      const { token } = response.data;
+      console.log('✅ AuthContext - Resposta do login:', response.data);
+
+      const { token, userId, email: userEmail, role } = response.data;
 
       localStorage.setItem('token', token);
-      localStorage.setItem('email', email);
-      localStorage.setItem('role', 'USER'); // ajuste manual por enquanto
+      localStorage.setItem('userId', userId);
+      localStorage.setItem('email', userEmail);
+      localStorage.setItem('role', role);
 
-      setUser({ email, role: 'USER' });
+      console.log('💾 AuthContext - Dados salvos no localStorage:', { userId, userEmail, role });
+
+      const userData = { 
+        id: userId,
+        email: userEmail, 
+        role: role 
+      };
+      
+      setUser(userData);
+      console.log('✅ AuthContext - User setado no state:', userData);
+
       return { error: null };
     } catch (error) {
+      console.error('❌ AuthContext - Erro no login:', error.response?.data);
       return { error: error.response?.data || error.message };
     }
   };
 
   const signOut = async () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     localStorage.removeItem('email');
     localStorage.removeItem('role');
     setUser(null);
+    console.log('✅ AuthContext - Logout realizado');
   };
 
   return (

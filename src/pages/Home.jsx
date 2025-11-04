@@ -1,63 +1,84 @@
-import React from 'react';
+import { Palette, Search, Clock, Droplet } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const Home = () => {
-  const features = [
-    { icon: '🔍', title: 'Busca Avançada', desc: 'Pesquise cores por nome, código ou marca.' },
-    { icon: '💧', title: 'Composição Detalhada', desc: 'Veja a composição completa de pigmentos.' },
-    { icon: '⏰', title: 'Histórico', desc: 'Mantenha registro das suas consultas.' }
-  ];
-
-  const navigateTo = (path) => {
-    window.location.href = path;
-  };
+export default function Home() {
+  const navigate = useNavigate();
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-blue-50 to-purple-100 flex items-center justify-center p-4">
-      <div className="text-center">
-        
-        {/* Hero Section */}
-        <div className="mb-16">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 via-green-500 to-yellow-500 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300">
-              <span className="text-2xl text-white">🎨</span>
+    <div className="h-screen w-screen bg-gradient-to-br from-black-200 via-gray-300 to-white-100 flex items-center justify-center p-4">
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center gap-4 mb-6">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 via-green-500 to-yellow-500 flex items-center justify-center">
+              <Palette className="w-12 h-12 text-white" />
             </div>
-            <h1 className="text-6xl font-bold text-gray-900 hover:scale-105 transition-transform duration-300">
-              PaintLab
-            </h1>
+            <h1 className="text-6xl font-bold text-gray-900">PaintLab</h1>
           </div>
-          <p className="text-2xl text-gray-700 max-w-3xl mx-auto">
-            Seu catálogo profissional de tintas e cores.
+          <p className="text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            Seu catálogo profissional de tintas e cores. Encontre a cor perfeita,
+            consulte composições e mantenha histórico das suas pesquisas.
           </p>
         </div>
 
-        {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {features.map((feature, index) => (
-            <div 
-              key={index} 
-              className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"
-              onClick={() => navigateTo('/cores')}
-            >
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto hover:scale-110 transition-transform duration-300">
-                <span className="text-xl">{feature.icon}</span>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-              <p className="text-gray-600 text-lg">{feature.desc}</p>
+          <div
+            onClick={() => navigate('/cores')}
+            className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow cursor-pointer hover:scale-105 transition-transform duration-300"
+          >
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+              <Search className="w-8 h-8 text-blue-600" />
             </div>
-          ))}
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Busca Avançada
+            </h3>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              Pesquise cores por nome, código ou marca. Sistema de busca
+              inteligente para encontrar exatamente o que precisa.
+            </p>
+          </div>
+
+          <div
+            onClick={() => navigate('/catalogo')}
+            className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow cursor-pointer hover:scale-105 transition-transform duration-300"
+          >
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+              <Droplet className="w-8 h-8 text-green-600" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Catálogo Completo
+            </h3>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              Navegue por todo nosso catálogo de cores organizado por categorias,
+              marcas e tipos de aplicação.
+            </p>
+          </div>
+
+          <div
+            onClick={() => navigate('/historico')}
+            className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow cursor-pointer hover:scale-105 transition-transform duration-300"
+          >
+            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-6">
+              <Clock className="w-8 h-8 text-orange-600" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Histórico de Consultas
+            </h3>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              Mantenha registro de todas as suas consultas e acesse
+              rapidamente cores já pesquisadas.
+            </p>
+          </div>
         </div>
 
-        {/* Button */}
-        <button
-          onClick={() => navigateTo('/cores')}
-          className="bg-gray-900 text-white px-12 py-4 rounded-xl font-bold text-xl hover:bg-gray-800 hover:scale-105 hover:shadow-xl transition-all duration-300 shadow-lg"
-        >
-          Explorar Catálogo
-        </button>
-
+        <div className="text-center">
+          <button
+            onClick={() => navigate('/login')}
+            className="bg-gray-900 text-white px-12 py-4 rounded-xl font-bold text-xl hover:bg-gray-800 transition-colors shadow-lg hover:shadow-xl hover:scale-105"
+          >
+            Começar Agora
+          </button>
+        </div>
       </div>
     </div>
   );
-};
-
-export default Home;
+}
