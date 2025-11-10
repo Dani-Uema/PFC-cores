@@ -1,0 +1,10 @@
+INSERT INTO pigments (id, name, hex_code) VALUES ('1334e434-e094-44fd-b6de-f8ebf1102322', 'Branco', '#FFFFFF');
+INSERT INTO pigments (id, name, hex_code) VALUES ('ec5a7f34-0c7a-41b5-b88d-b141ae9e58bc', 'Vermelho', '#FF0000');
+INSERT INTO pigments (id, name, hex_code) VALUES ('dd1da550-a0b1-4bfa-aad1-154779019339', 'Azul', '#0000FF');
+INSERT INTO pigments (id, name, hex_code) VALUES ('1180d92b-303a-4fe3-9fa7-38baa09c5552', 'Verde', '#008000');
+INSERT INTO pigments (id, name, hex_code) VALUES ('853854b7-fb0d-4d1d-85a5-087326fd47ae', 'Amarelo', '#FFFF00');
+INSERT INTO pigments (id, name, hex_code) VALUES ('4a64da73-0c8e-42b1-9658-b1e86288b505', 'Marrom', '#8B4513');
+INSERT INTO pigments (id, name, hex_code) VALUES ('b515b239-9f12-453a-a732-3e7497dc9836', 'Ocre', '#CC7722');
+INSERT INTO pigments (id, name, hex_code) VALUES ('3721d209-086e-4500-b8ac-c9545bec6a2c', 'Violeta', '#8A2BE2');
+INSERT INTO pigments (id, name, hex_code) VALUES ('532d5ce5-2323-4d3b-b30f-0328b2b9ba89', 'Preto', '#000000');
+INSERT INTO pigments (id, name, hex_code) VALUES ('ac3f5922-4234-4506-82cf-c3bc42d5a9e0', 'Laranja', '#FFA500');
