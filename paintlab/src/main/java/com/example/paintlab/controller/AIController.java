@@ -65,7 +65,6 @@ public class AIController {
         try {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> {
-                        System.out.println("❌ USUÁRIO NÃO ENCONTRADO: " + dto.getUserId());
                         return new RuntimeException("User not found: " + dto.getUserId());
                     });
             AIAnalysis analysis = new AIAnalysis();
