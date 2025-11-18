@@ -81,12 +81,12 @@ class AIControllerTest {
     }
 
     @Test
-    void analisarCor_ShouldReturnSuccessResponse_WhenValidHexCode() {
+    void analyzeColor_ShouldReturnSuccessResponse_WhenValidHexCode() {
         // Arrange
-        when(aiService.analisarCorComIA("#FF5733")).thenReturn(aiResult);
+        when(aiService.analyzedColorWithAI("#FF5733")).thenReturn(aiResult);
 
         // Act
-        ResponseEntity<AIAnalysisResponse> response = aiController.analisarCor(analysisRequest);
+        ResponseEntity<AIAnalysisResponse> response = aiController.analyzeColor(analysisRequest);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -94,32 +94,32 @@ class AIControllerTest {
         assertTrue(response.getBody().isSuccess());
         assertEquals("#FF5733", response.getBody().getAnalyzedColor());
         assertEquals("Análise concluída com sucesso", response.getBody().getMessage());
-        verify(aiService).analisarCorComIA("#FF5733");
+        verify(aiService).analyzedColorWithAI("#FF5733");
     }
 
     @Test
-    void analisarCor_ShouldReturnErrorResponse_WhenInvalidHexCode() {
+    void analyzeColor_ShouldReturnErrorResponse_WhenInvalidHexCode() {
         // Arrange
         analysisRequest.setHexCode("invalid-hex");
 
         // Act
-        ResponseEntity<AIAnalysisResponse> response = aiController.analisarCor(analysisRequest);
+        ResponseEntity<AIAnalysisResponse> response = aiController.analyzeColor(analysisRequest);
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNotNull(response.getBody());
         assertFalse(response.getBody().isSuccess());
         assertTrue(response.getBody().getMessage().contains("Código HEX inválido"));
-        verify(aiService, never()).analisarCorComIA(anyString());
+        verify(aiService, never()).analyzedColorWithAI(anyString());
     }
 
     @Test
-    void analisarCor_ShouldReturnErrorResponse_WhenNullHexCode() {
+    void analyzeColor_ShouldReturnErrorResponse_WhenNullHexCode() {
         // Arrange
         analysisRequest.setHexCode(null);
 
         // Act
-        ResponseEntity<AIAnalysisResponse> response = aiController.analisarCor(analysisRequest);
+        ResponseEntity<AIAnalysisResponse> response = aiController.analyzeColor(analysisRequest);
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -129,24 +129,24 @@ class AIControllerTest {
     }
 
     @Test
-    void analisarCor_ShouldReturnErrorResponse_WhenAIServiceFails() {
+    void analyzeColor_ShouldReturnErrorResponse_WhenAIServiceFails() {
         // Arrange
-        when(aiService.analisarCorComIA("#FF5733"))
+        when(aiService.analyzedColorWithAI("#FF5733"))
                 .thenThrow(new RuntimeException("AI Service unavailable"));
 
         // Act
-        ResponseEntity<AIAnalysisResponse> response = aiController.analisarCor(analysisRequest);
+        ResponseEntity<AIAnalysisResponse> response = aiController.analyzeColor(analysisRequest);
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNotNull(response.getBody());
         assertFalse(response.getBody().isSuccess());
         assertTrue(response.getBody().getMessage().contains("AI Service unavailable"));
-        verify(aiService).analisarCorComIA("#FF5733");
+        verify(aiService).analyzedColorWithAI("#FF5733");
     }
 
     @Test
-    void analisarCor_ShouldHandlePartialAIResult() {
+    void analyzeColor_ShouldHandlePartialAIResult() {
         // Arrange
         Map<String, Object> partialResult = new HashMap<>();
         partialResult.put("cor_analisada", "#FF5733");
@@ -154,10 +154,10 @@ class AIControllerTest {
         partialResult.put("fonte", "AI Model");
         partialResult.put("timestamp", LocalDateTime.now());
 
-        when(aiService.analisarCorComIA("#FF5733")).thenReturn(partialResult);
+        when(aiService.analyzedColorWithAI("#FF5733")).thenReturn(partialResult);
 
         // Act
-        ResponseEntity<AIAnalysisResponse> response = aiController.analisarCor(analysisRequest);
+        ResponseEntity<AIAnalysisResponse> response = aiController.analyzeColor(analysisRequest);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -170,17 +170,17 @@ class AIControllerTest {
     }
 
     @Test
-    void analisarCor_ShouldHandleMinimalAIResult() {
+    void analyzeColor_ShouldHandleMinimalAIResult() {
         // Arrange
         Map<String, Object> minimalResult = new HashMap<>();
         minimalResult.put("cor_analisada", "#FF5733");
         minimalResult.put("pigmentos", List.of()); // Lista vazia em vez de null
         minimalResult.put("timestamp", LocalDateTime.now());
 
-        when(aiService.analisarCorComIA("#FF5733")).thenReturn(minimalResult);
+        when(aiService.analyzedColorWithAI("#FF5733")).thenReturn(minimalResult);
 
         // Act
-        ResponseEntity<AIAnalysisResponse> response = aiController.analisarCor(analysisRequest);
+        ResponseEntity<AIAnalysisResponse> response = aiController.analyzeColor(analysisRequest);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -316,7 +316,7 @@ class AIControllerTest {
     }
 
     @Test
-    void analisarCor_ShouldHandleVariousDataTypesInAIResult() {
+    void analyzeColor_ShouldHandleVariousDataTypesInAIResult() {
         // Arrange
         Map<String, Object> complexResult = new HashMap<>();
         complexResult.put("cor_analisada", 12345); // Número - getStringSafe converte para "12345"
@@ -329,10 +329,10 @@ class AIControllerTest {
         });
         complexResult.put("timestamp", "2023-01-01"); // String
 
-        when(aiService.analisarCorComIA("#FF5733")).thenReturn(complexResult);
+        when(aiService.analyzedColorWithAI("#FF5733")).thenReturn(complexResult);
 
         // Act
-        ResponseEntity<AIAnalysisResponse> response = aiController.analisarCor(analysisRequest);
+        ResponseEntity<AIAnalysisResponse> response = aiController.analyzeColor(analysisRequest);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());

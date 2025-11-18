@@ -17,7 +17,6 @@ public class PigmentService {
 
     public PigmentService(PigmentRepository pigmentRepository) {
         this.pigmentRepository = pigmentRepository;
-        // ✅ Garantir que os pigmentos básicos existam ao iniciar
         initializeBasicPigments();
     }
 
@@ -33,7 +32,6 @@ public class PigmentService {
     public Pigment createPigment(PigmentDTO pigmentDTO) {
         Pigment pigment = new Pigment();
         pigment.setName(pigmentDTO.getName());
-        // Se precisar de hexCode, ajuste conforme sua necessidade
         return pigmentRepository.save(pigment);
     }
 
@@ -55,7 +53,6 @@ public class PigmentService {
         pigmentRepository.delete(pigment);
     }
 
-    // ✅ INICIALIZAR APENAS OS PIGMENTOS BÁSICOS
     private void initializeBasicPigments() {
         if (pigmentRepository.count() == 0) {
             List<Pigment> basicPigments = List.of(
@@ -72,7 +69,6 @@ public class PigmentService {
             );
 
             pigmentRepository.saveAll(basicPigments);
-            System.out.println("✅ Pigmentos básicos criados: " + basicPigments.size());
         }
     }
 }

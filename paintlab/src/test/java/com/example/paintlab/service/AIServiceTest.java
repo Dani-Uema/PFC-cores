@@ -1,22 +1,13 @@
 package com.example.paintlab.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
-import reactor.core.publisher.Mono;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AIServiceTest {
@@ -25,12 +16,12 @@ class AIServiceTest {
     private AIService aiService;
 
     @Test
-    void analisarCorComIA_ShouldReturnValidResult_WhenValidHexCode() {
+    void analyzedColorWithAI_ShouldReturnValidResult_WhenValidHexCode() {
         // Arrange
         String hexCode = "#FF5733";
 
         // Act
-        Map<String, Object> result = aiService.analisarCorComIA(hexCode);
+        Map<String, Object> result = aiService.analyzedColorWithAI(hexCode);
 
         // Assert
         assertNotNull(result);
@@ -42,32 +33,32 @@ class AIServiceTest {
     }
 
     @Test
-    void analisarCorComIA_ShouldThrowException_WhenInvalidHexCode() {
+    void analyzedColorWithAI_ShouldThrowException_WhenInvalidHexCode() {
         // Arrange
         String invalidHex = "invalid";
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> {
-            aiService.analisarCorComIA(invalidHex);
+            aiService.analyzedColorWithAI(invalidHex);
         });
     }
 
     @Test
-    void analisarCorComIA_ShouldThrowException_WhenNullHexCode() {
+    void analyzedColorWithAI_ShouldThrowException_WhenNullHexCode() {
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> {
-            aiService.analisarCorComIA(null);
+            aiService.analyzedColorWithAI(null);
         });
     }
 
     @Test
-    void analisarCorComIA_ShouldReturnFallback_WhenExceptionOccurs() {
+    void analyzedColorWithAI_ShouldReturnFallback_WhenExceptionOccurs() {
         // Arrange
         String hexCode = "#FF5733";
 
 
         // Act
-        Map<String, Object> result = aiService.analisarCorComIA(hexCode);
+        Map<String, Object> result = aiService.analyzedColorWithAI(hexCode);
 
         // Assert
         assertNotNull(result);
@@ -77,13 +68,13 @@ class AIServiceTest {
     }
 
     @Test
-    void analisarCorComIA_ShouldHandleVariousHexCodes() {
+    void analyzedColorWithAI_ShouldHandleVariousHexCodes() {
         // Arrange
         String[] hexCodes = {"#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF"};
 
         // Act & Assert
         for (String hex : hexCodes) {
-            Map<String, Object> result = aiService.analisarCorComIA(hex);
+            Map<String, Object> result = aiService.analyzedColorWithAI(hex);
             assertNotNull(result);
             assertEquals(hex, result.get("cor_analisada"));
 
@@ -95,12 +86,12 @@ class AIServiceTest {
 
     // Testes para métodos públicos ou que possam ser testados indiretamente
     @Test
-    void analisarCorComIA_ShouldReturnConsistentStructure() {
+    void analyzedColorWithAI_ShouldReturnConsistentStructure() {
         // Arrange
         String hexCode = "#123456";
 
         // Act
-        Map<String, Object> result = aiService.analisarCorComIA(hexCode);
+        Map<String, Object> result = aiService.analyzedColorWithAI(hexCode);
 
         // Assert
         // Verifica se a estrutura sempre tem os campos esperados
@@ -117,12 +108,12 @@ class AIServiceTest {
     }
 
     @Test
-    void analisarCorComIA_ShouldHaveValidPigmentsStructure() {
+    void analyzedColorWithAI_ShouldHaveValidPigmentsStructure() {
         // Arrange
         String hexCode = "#ABCDEF";
 
         // Act
-        Map<String, Object> result = aiService.analisarCorComIA(hexCode);
+        Map<String, Object> result = aiService.analyzedColorWithAI(hexCode);
 
         // Assert
         @SuppressWarnings("unchecked")
@@ -143,12 +134,12 @@ class AIServiceTest {
     }
 
     @Test
-    void analisarCorComIA_ShouldHavePigmentsSummingTo100() {
+    void analyzedColorWithAI_ShouldHavePigmentsSummingTo100() {
         // Arrange
         String hexCode = "#FF5733";
 
         // Act
-        Map<String, Object> result = aiService.analisarCorComIA(hexCode);
+        Map<String, Object> result = aiService.analyzedColorWithAI(hexCode);
 
         // Assert
         @SuppressWarnings("unchecked")
@@ -171,23 +162,23 @@ class AIServiceTest {
 
         for (String validHex : validHexCodes) {
             // Hex válido não deve lançar exceção
-            assertDoesNotThrow(() -> aiService.analisarCorComIA(validHex));
+            assertDoesNotThrow(() -> aiService.analyzedColorWithAI(validHex));
         }
 
         for (String invalidHex : invalidHexCodes) {
             // Hex inválido deve lançar exceção
             assertThrows(IllegalArgumentException.class, () ->
-                    aiService.analisarCorComIA(invalidHex));
+                    aiService.analyzedColorWithAI(invalidHex));
         }
     }
 
     @Test
-    void analisarCorComIA_ShouldOrderPigmentsByProportion() {
+    void analyzedColorWithAI_ShouldOrderPigmentsByProportion() {
         // Arrange
         String hexCode = "#FF5733";
 
         // Act
-        Map<String, Object> result = aiService.analisarCorComIA(hexCode);
+        Map<String, Object> result = aiService.analyzedColorWithAI(hexCode);
 
         // Assert
         @SuppressWarnings("unchecked")
@@ -202,12 +193,12 @@ class AIServiceTest {
     }
 
     @Test
-    void analisarCorComIA_ShouldReturnReasonableProportions() {
+    void analyzedColorWithAI_ShouldReturnReasonableProportions() {
         // Arrange
         String hexCode = "#FF5733"; // Cor laranja-avermelhada
 
         // Act
-        Map<String, Object> result = aiService.analisarCorComIA(hexCode);
+        Map<String, Object> result = aiService.analyzedColorWithAI(hexCode);
 
         // Assert
         @SuppressWarnings("unchecked")

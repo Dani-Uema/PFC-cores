@@ -26,10 +26,8 @@ public interface SavedColorRepository extends JpaRepository<SavedColor, UUID> {
     @Query("SELECT sc FROM SavedColor sc WHERE sc.user.id = :userId AND sc.environmentTag LIKE %:tag%")
     List<SavedColor> findByUserIdAndEnvironmentTagContaining(@Param("userId") UUID userId, @Param("tag") String tag);
 
-    // CORREÇÃO: Adicionar método para verificar existência antes de deletar
     Optional<SavedColor> findByIdAndUserId(UUID id, UUID userId);
 
-    // CORREÇÃO: Adicionar @Modifying e @Transactional na query de delete
     @Modifying
     @Query("DELETE FROM SavedColor sc WHERE sc.id = :id AND sc.user.id = :userId")
     void deleteByIdAndUserId(@Param("id") UUID id, @Param("userId") UUID userId);

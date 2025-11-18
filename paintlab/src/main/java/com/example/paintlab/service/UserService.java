@@ -62,25 +62,15 @@ public class UserService {
 
     @Transactional
     public void deleteAccount(UUID userId) {
-        System.out.println("🎯 INICIANDO EXCLUSÃO DA CONTA: " + userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         try {
-            System.out.println("🗑️ Excluindo análises IA do usuário...");
             aiAnalysisRepository.deleteByUser(user);
-
-            System.out.println("🗑️ Excluindo histórico de consultas...");
             historyRepository.deleteByUser(user);
-
-            System.out.println("🗑️ Excluindo usuário...");
             userRepository.delete(user);
-
-            System.out.println("✅ CONTA EXCLUÍDA COM SUCESSO: " + userId);
-
         } catch (Exception e) {
-            System.out.println("❌ ERRO AO EXCLUIR CONTA: " + e.getMessage());
             throw new RuntimeException("Erro ao excluir conta: " + e.getMessage());
         }
     }

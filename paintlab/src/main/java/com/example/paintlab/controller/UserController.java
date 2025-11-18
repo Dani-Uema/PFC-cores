@@ -34,7 +34,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // endpoint cadastro
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterDTO data) {
         try {
@@ -52,7 +51,6 @@ public class UserController {
         }
     }
 
-    // login
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid UserDTO data) {
         try{
@@ -77,7 +75,6 @@ public class UserController {
         }
     }
 
-    // atualizar perfil
     @PutMapping("/profile")
     public ResponseEntity updateProfile(@RequestBody UserUpdateDTO data,
                                         @AuthenticationPrincipal User authenticatedUser) {
@@ -95,7 +92,6 @@ public class UserController {
         }
     }
 
-    //atualizar senha
     @PutMapping("/password")
     public ResponseEntity updatePassword(@RequestBody PasswordUpdateDTO data,
                                          @AuthenticationPrincipal User authenticatedUser) {
@@ -113,7 +109,6 @@ public class UserController {
         }
     }
 
-    // deletar conta
     @DeleteMapping("/account")
     public ResponseEntity deleteAccount(@AuthenticationPrincipal User authenticatedUser) {
         try {
@@ -125,7 +120,6 @@ public class UserController {
         }
     }
 
-    // logout
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -137,7 +131,6 @@ public class UserController {
         }
     }
 
-    //criar outro admin
     @PostMapping("/create-admin")
     public ResponseEntity createAdmin(@RequestBody RegisterDTO data,
                                       @AuthenticationPrincipal User authenticatedUser) {

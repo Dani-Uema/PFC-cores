@@ -27,7 +27,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        System.out.println("🎯 SECURITY CONFIG CARREGADA - /api/ia/** PERMITIDO!");
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -60,9 +59,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/history").authenticated()
                         .requestMatchers(HttpMethod.GET, "/history/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/history/**").authenticated()
+
                         .requestMatchers(HttpMethod.POST, "/api/ia/**").permitAll()
                         .requestMatchers("/api/history/**").permitAll()
                         .requestMatchers("/api/ia/**").permitAll()
+                        .requestMatchers("/api/ia/analyzed-color").permitAll()
+
 
                         .anyRequest().authenticated()
                 )
